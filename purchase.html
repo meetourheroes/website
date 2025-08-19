@@ -1,62 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Purchase Form</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buy a Coloring Book</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="purchase-bg">
-    <div class="purchase-container">
-      <div class="purchase-card">
-        <h2 class="purchase-title">Buy Now</h2>
-        <form action="https://formspree.io/f/your-formspree-endpoint" method="POST" id="purchaseForm" autocomplete="off">
-          <div class="form-group floating-label">
-            <input type="text" name="name" id="name" required>
-            <label for="name">Name</label>
-          </div>
-          <div class="form-group floating-label">
-            <input type="email" name="email" id="email" required>
-            <label for="email">Email</label>
-          </div>
-          <div class="form-group floating-label">
-            <input type="text" name="product" id="product" required>
-            <label for="product">Product</label>
-          </div>
-          <div class="form-group floating-label">
-            <input type="number" name="quantity" id="quantity" min="1" required>
-            <label for="quantity">Quantity</label>
-          </div>
-          <div class="form-group floating-label">
-            <textarea name="message" id="message" rows="2"></textarea>
-            <label for="message">Additional Message</label>
-          </div>
-          <button type="submit" class="btn-buy">
-            <span class="btn-text">Buy Now</span>
-            <span class="btn-loader"></span>
-          </button>
-        </form>
-        <div class="success-message" id="successMessage">
-          <span class="icon">✅</span> Thank you! Your purchase request has been sent.
+  <!-- Header / Navigation -->
+  <header>
+    <h1>Hero’s In Action</h1>
+    <p class="subtitle">Promoting safety & trust through fun learning</p>
+    <nav class="page-nav">
+      <a href="index.html" class="nav-button">Home</a>
+      <a href="authors.html" class="nav-button">Meet the Authors</a>
+      <a href="contact.html" class="nav-button">Contact Us</a>
+      <a href="purchase.html" class="nav-button active">Buy a Book</a>
+      <a href="feedback.html" class="nav-button">Feedback</a>
+    </nav>
+  </header>
+
+  <!-- Purchase Section -->
+  <main>
+    <section class="contact-section">
+      <!-- Fun Icon -->
+      <img 
+        src="https://cdn-icons-png.flaticon.com/512/561/561127.png" 
+        alt="Book Icon" 
+        class="contact-icon"
+      />
+
+      <h2>Buy a Coloring Book</h2>
+      <p>Ready to order? Fill out the form below and we’ll reach out to arrange your purchase!</p>
+      
+      <form
+        action="https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT"
+        class="fs-form"
+        target="_top"
+        method="POST"
+        id="purchaseForm"
+        autocomplete="off"
+      >
+        <div class="fs-field">
+          <label class="fs-label" for="name">Name</label>
+          <input class="fs-input" id="name" name="name" required />
         </div>
+
+        <div class="fs-field">
+          <label class="fs-label" for="email">Email</label>
+          <input class="fs-input" id="email" name="email" type="email" required />
+        </div>
+
+        <div class="fs-field">
+          <label class="fs-label" for="product">Book Title</label>
+          <input class="fs-input" id="product" name="product" required placeholder="e.g. Heroes In Action Coloring Book" />
+        </div>
+
+        <div class="fs-field">
+          <label class="fs-label" for="quantity">Quantity</label>
+          <input class="fs-input" id="quantity" name="quantity" type="number" min="1" required />
+        </div>
+
+        <div class="fs-field">
+          <label class="fs-label" for="message">Additional Message</label>
+          <textarea class="fs-textarea" id="message" name="message" rows="3" placeholder="Any special requests?" ></textarea>
+        </div>
+
+        <div class="fs-button-group">
+          <button class="fs-button" type="submit">Buy Now</button>
+        </div>
+      </form>
+      <div class="success-message" id="successMessage">
+        <span class="icon">✅</span> Thank you! Your purchase request has been sent.
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Hero’s In Action LLC – All rights reserved.</p>
+  </footer>
+
   <script>
-    // Button loader animation + success message
-    const form = document.getElementById('purchaseForm');
-    const btnBuy = document.querySelector('.btn-buy');
-    form.addEventListener('submit', function(e) {
+    // Success message logic (optional)
+    document.getElementById('purchaseForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      btnBuy.classList.add('loading');
-      btnBuy.disabled = true;
+      var form = e.target;
       var data = new FormData(form);
+      var button = form.querySelector('.fs-button');
+      button.disabled = true;
+      button.textContent = 'Sending...';
+
       fetch(form.action, {
         method: 'POST',
         body: data,
         headers: { 'Accept': 'application/json' }
       }).then(function(response) {
+        button.disabled = false;
+        button.textContent = 'Buy Now';
         if (response.ok) {
           form.style.display = 'none';
           document.getElementById('successMessage').style.display = 'block';
@@ -65,28 +106,11 @@
             alert(data.error || 'There was a problem submitting your purchase. Please try again.');
           });
         }
-        btnBuy.classList.remove('loading');
-        btnBuy.disabled = false;
       }).catch(function(error){
+        button.disabled = false;
+        button.textContent = 'Buy Now';
         alert('There was a problem submitting your purchase. Please try again.');
-        btnBuy.classList.remove('loading');
-        btnBuy.disabled = false;
       });
-    });
-
-    // Floating label effect
-    document.querySelectorAll('.floating-label input, .floating-label textarea').forEach(function(el) {
-      el.addEventListener('blur', function() {
-        if (el.value) {
-          el.classList.add('has-value');
-        } else {
-          el.classList.remove('has-value');
-        }
-      });
-      // On page load
-      if (el.value) {
-        el.classList.add('has-value');
-      }
     });
   </script>
 </body>
