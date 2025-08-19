@@ -7,50 +7,55 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="purchase-wrapper">
-    <div class="purchase-card">
-      <h2 class="purchase-title">Buy Now</h2>
-      <form action="https://formspree.io/f/your-formspree-endpoint" method="POST" id="purchaseForm">
-        <div class="form-group">
-          <label for="name"><span class="icon">👤</span> Name</label>
-          <input type="text" name="name" id="name" required>
+  <div class="purchase-bg">
+    <div class="purchase-container">
+      <div class="purchase-card">
+        <h2 class="purchase-title">Buy Now</h2>
+        <form action="https://formspree.io/f/your-formspree-endpoint" method="POST" id="purchaseForm" autocomplete="off">
+          <div class="form-group floating-label">
+            <input type="text" name="name" id="name" required>
+            <label for="name">Name</label>
+          </div>
+          <div class="form-group floating-label">
+            <input type="email" name="email" id="email" required>
+            <label for="email">Email</label>
+          </div>
+          <div class="form-group floating-label">
+            <input type="text" name="product" id="product" required>
+            <label for="product">Product</label>
+          </div>
+          <div class="form-group floating-label">
+            <input type="number" name="quantity" id="quantity" min="1" required>
+            <label for="quantity">Quantity</label>
+          </div>
+          <div class="form-group floating-label">
+            <textarea name="message" id="message" rows="2"></textarea>
+            <label for="message">Additional Message</label>
+          </div>
+          <button type="submit" class="btn-buy">
+            <span class="btn-text">Buy Now</span>
+            <span class="btn-loader"></span>
+          </button>
+        </form>
+        <div class="success-message" id="successMessage">
+          <span class="icon">✅</span> Thank you! Your purchase request has been sent.
         </div>
-        <div class="form-group">
-          <label for="email"><span class="icon">📧</span> Email</label>
-          <input type="email" name="email" id="email" required>
-        </div>
-        <div class="form-group">
-          <label for="product"><span class="icon">📦</span> Product</label>
-          <input type="text" name="product" id="product" required>
-        </div>
-        <div class="form-group">
-          <label for="quantity"><span class="icon">🔢</span> Quantity</label>
-          <input type="number" name="quantity" id="quantity" min="1" required>
-        </div>
-        <div class="form-group">
-          <label for="message"><span class="icon">💬</span> Additional Message</label>
-          <textarea name="message" id="message" rows="2"></textarea>
-        </div>
-        <button type="submit" class="btn-buy">Buy Now</button>
-      </form>
-      <div class="success-message" id="successMessage">
-        <span class="icon">✅</span> Thank you! Your purchase request has been sent.
       </div>
     </div>
   </div>
   <script>
-    // Simple feedback on submit (works for Formspree's default behavior)
-    document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+    // Button loader animation + success message
+    const form = document.getElementById('purchaseForm');
+    const btnBuy = document.querySelector('.btn-buy');
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      var form = e.target;
+      btnBuy.classList.add('loading');
+      btnBuy.disabled = true;
       var data = new FormData(form);
-
       fetch(form.action, {
         method: 'POST',
         body: data,
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       }).then(function(response) {
         if (response.ok) {
           form.style.display = 'none';
@@ -60,9 +65,28 @@
             alert(data.error || 'There was a problem submitting your purchase. Please try again.');
           });
         }
+        btnBuy.classList.remove('loading');
+        btnBuy.disabled = false;
       }).catch(function(error){
         alert('There was a problem submitting your purchase. Please try again.');
+        btnBuy.classList.remove('loading');
+        btnBuy.disabled = false;
       });
+    });
+
+    // Floating label effect
+    document.querySelectorAll('.floating-label input, .floating-label textarea').forEach(function(el) {
+      el.addEventListener('blur', function() {
+        if (el.value) {
+          el.classList.add('has-value');
+        } else {
+          el.classList.remove('has-value');
+        }
+      });
+      // On page load
+      if (el.value) {
+        el.classList.add('has-value');
+      }
     });
   </script>
 </body>
