@@ -4,31 +4,38 @@
   <meta charset="UTF-8">
   <title>Purchase Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="form-container">
-    <h2>Purchase Form</h2>
-    <form action="https://formspree.io/f/manbzdvr" method="POST" id="purchaseForm">
-      <label for="name">Name:</label>
-      <input type="text" name="name" id="name" required>
-
-      <label for="email">Email:</label>
-      <input type="email" name="email" id="email" required>
-
-      <label for="product">Product:</label>
-      <input type="text" name="product" id="product" required>
-
-      <label for="quantity">Quantity:</label>
-      <input type="number" name="quantity" id="quantity" min="1" required>
-
-      <label for="message">Additional Message:</label>
-      <textarea name="message" id="message"></textarea>
-
-      <button type="submit">Buy Now</button>
-    </form>
-    <div class="success-message" id="successMessage">
-      Thank you! Your purchase request has been sent.
+  <div class="purchase-wrapper">
+    <div class="purchase-card">
+      <h2 class="purchase-title">Buy Now</h2>
+      <form action="https://formspree.io/f/your-formspree-endpoint" method="POST" id="purchaseForm">
+        <div class="form-group">
+          <label for="name"><span class="icon">👤</span> Name</label>
+          <input type="text" name="name" id="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email"><span class="icon">📧</span> Email</label>
+          <input type="email" name="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="product"><span class="icon">📦</span> Product</label>
+          <input type="text" name="product" id="product" required>
+        </div>
+        <div class="form-group">
+          <label for="quantity"><span class="icon">🔢</span> Quantity</label>
+          <input type="number" name="quantity" id="quantity" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="message"><span class="icon">💬</span> Additional Message</label>
+          <textarea name="message" id="message" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn-buy">Buy Now</button>
+      </form>
+      <div class="success-message" id="successMessage">
+        <span class="icon">✅</span> Thank you! Your purchase request has been sent.
+      </div>
     </div>
   </div>
   <script>
