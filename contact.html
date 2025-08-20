@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Us</title>
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Hide success message by default */
+    .success-message {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #e6ffe6;
+      color: #2d7a2d;
+      border: 1px solid #b3e6b3;
+      border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
    <!-- Theme Toggle (pinned top-right, does not affect layout) -->
@@ -42,8 +56,8 @@
       <form
         action="https://formspree.io/f/manbzdvr"
         class="fs-form"
-        target="_top"
         method="POST"
+        id="contactForm"
       >
         <div class="fs-field">
           <label class="fs-label" for="name">Name</label>
@@ -65,6 +79,11 @@
           <button class="fs-button" type="submit">Send Message</button>
         </div>
       </form>
+
+      <!-- Success Message -->
+      <div class="success-message" id="successMessage">
+        ✅ Thank you! Your message has been sent.
+      </div>
     </section>
   </main>
 
@@ -72,6 +91,42 @@
   <footer>
     <p>© 2025 Hero’s In Action LLC – All rights reserved.</p>
   </footer>
+
+  <!-- Formspree AJAX Script -->
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      const button = form.querySelector('.fs-button');
+      button.disabled = true;
+      button.textContent = 'Sending...';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        button.disabled = false;
+        button.textContent = 'Send Message';
+
+        if (response.ok) {
+          form.style.display = 'none';
+          document.getElementById('successMessage').style.display = 'block';
+          form.reset();
+        } else {
+          alert('There was a problem sending your message. Please try again.');
+        }
+      } catch (error) {
+        button.disabled = false;
+        button.textContent = 'Send Message';
+        alert('Network error. Please check your connection and try again.');
+      }
+    });
+  </script>
+
   <!-- Theme Toggle Script -->
   <script>
     const toggle = document.getElementById("themeToggle");
