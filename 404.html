@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found | Heroes in Action</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Extra cartoon styling just for 404 page */
+    .oops {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #ff6f61;
+      text-shadow: 3px 3px 0 #ffe29a, 5px 5px 0 #54d2d2;
+      margin: 1rem 0;
+      animation: bounce 1.5s infinite;
+    }
+    .not-found-message {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #364958;
+      margin-bottom: 2rem;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    /* Dark mode fixes for custom styles */
+    body.dark-mode .oops {
+      color: #ffb347;
+      text-shadow: 3px 3px 0 #2a2a2a, 5px 5px 0 #ff6f61;
+    }
+    body.dark-mode .not-found-message {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Theme Toggle (pinned top-right) -->
+  <label class="theme-switch">
+    <input type="checkbox" id="themeToggle">
+    <div class="slider" data-light="Light" data-dark="Dark"></div>
+  </label>
+
+  <!-- Header -->
+  <header>
+    <h1>Heroes in Action!</h1>
+    <p class="subtitle">Oops! Something went wrong...</p>
+    <nav class="page-nav">
+      <a href="index.html" class="nav-button">Home</a>
+      <a href="authors.html" class="nav-button">Meet the Authors</a>
+      <a href="heroes.html" class="nav-button">Meet our Heroes</a>
+      <a href="contact.html" class="nav-button">Contact Us</a>
+      <a href="feedback.html" class="nav-button">Feedback</a>
+    </nav>
+  </header>
+
+  <!-- Main Section -->
+  <main>
+    <section class="contact-section">
+      <div class="oops">404!</div>
+      <p class="not-found-message">
+        Looks like this page ran off on a hero mission!  
+        Don’t worry — our heroes will guide you back.
+      </p>
+      <a href="index.html" class="buy-button">Return Home</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Heroes in Action LLC – All rights reserved.</p>
+  </footer>
+
+  <!-- Dark Mode Script -->
+  <script>
+    const toggle = document.getElementById("themeToggle");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      document.body.classList.add(savedTheme + "-mode");
+      toggle.checked = savedTheme === "dark";
+    } else {
+      document.body.classList.add(prefersDark ? "dark-mode" : "light-mode");
+      toggle.checked = prefersDark;
+    }
+
+    toggle.addEventListener("change", () => {
+      if (toggle.checked) {
+        document.body.classList.remove("light-mode");
+        document.body.classList.add("dark-mode");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.body.classList.remove("dark-mode");
+        document.body.classList.add("light-mode");
+        localStorage.setItem("theme", "light");
+      }
+    });
+  </script>
+</body>
+</html>
